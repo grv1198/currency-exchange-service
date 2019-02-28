@@ -2,6 +2,8 @@ package com.grv.microservices.currencyexchangeservice.controller;
 
 import com.grv.microservices.currencyexchangeservice.bean.ExchangeValue;
 import com.grv.microservices.currencyexchangeservice.repository.ExchangeValueRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 @RestController
 public class CurrencyExchangeController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(CurrencyExchangeController.class);
     @Autowired
     private Environment environment;
 
@@ -24,6 +27,9 @@ public class CurrencyExchangeController {
 
         ExchangeValue exchangeValue = repository.findByFromAndTo(from, to);
         exchangeValue.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+        LOG.info("{}", exchangeValue);
         return  exchangeValue;
+
+
     }
 }
